@@ -19,11 +19,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.7
-      with: 
-       versionSpec: '6.x'
-       includeprerelease: true
+    - name: Set the value
+      run: echo '::set-output name=name=DOTNET_ROOT::/opt/hostedtoolcache/dncs/3.1.420/x64'
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 

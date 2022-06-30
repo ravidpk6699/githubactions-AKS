@@ -25,6 +25,7 @@ jobs:
        versionSpec: '5.x'
 
     - name: Set the value
+       ACTIONS_ALLOW_UNSECURE_COMMANDS=true 
       run: echo '::set-output name=DOTNET_ROOT::/opt/hostedtoolcache/dncs/3.1.420/x64'
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2

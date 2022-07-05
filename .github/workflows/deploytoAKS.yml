@@ -41,7 +41,7 @@ jobs:
     
     - uses: azure/docker-login@v1
       with:
-        login-server: garegistry1.azurecr.io
+        login-server: garegistry1.azurecr.io .
         username: ${{ secrets.REGISTRY_USERNAME }} 
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
@@ -63,7 +63,7 @@ jobs:
       uses: Azure/k8s-create-secret@v1.1
       with:
         # Container registry url
-        container-registry-url: https://garegistry1.azurecr.io/v1/
+        container-registry-url: garegistry1.azurecr.io 
         # Container registry username
         container-registry-username: '${{secrets.REGISTRY_USERNAME}}'
         # Container registry password

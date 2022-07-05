@@ -36,6 +36,8 @@ jobs:
         # Optional package source for which to set up authentication. Will consult any existing NuGet.config in the root of the repo and provide a temporary NuGet.config using the NUGET_AUTH_TOKEN environment variable as a ClearTextPassword
     - name: dotnet build
       run: dotnet build -c release
+    - name: docker build
+      run: docker build -t githubactions-aks-demo:'${{github.sha}}' .
     
     - uses: azure/docker-login@v1
       with:

@@ -63,7 +63,7 @@ jobs:
       uses: Azure/k8s-create-secret@v1.1
       with:
         # Container registry url
-        container-registry-url: garegistry1.azurecr.io
+        container-registry-url: https://garegistry1.azurecr.io/v1/
         # Container registry username
         container-registry-username: '${{secrets.REGISTRY_USERNAME}}'
         # Container registry password

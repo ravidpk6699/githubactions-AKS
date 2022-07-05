@@ -37,17 +37,15 @@ jobs:
     - name: dotnet build
       run: dotnet build -c release
     
-    - name: docker build
-      run: docker build -t githubactions-aks-demo:'${{github.sha}}' .
-    
-    - name: docker login
-      run: docker login --username '${{secrets.DOCKER_LOGIN}}' --password '${{secrets.DOCKER_PASSWORD}}'
-      
-    - name: tag docker image
-      run: docker tag githubactions-aks-demo:'${{github.sha}}' '${{secrets.DOCKER_LOGIN}}'/githubactions-aks-demo:'${{github.sha}}'
-    
-    - name: push docker image
-      run: docker push '${{secrets.DOCKER_LOGIN}}'/githubactions-aks-demo:'${{github.sha}}'
+    - uses: azure/docker-login@v1
+      with:
+        login-server: garegistry1.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }} 
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - run: |
+        docker build . -t garegistry1.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+        docker push garegistry1.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+      working-directory: ./test
       
     - name: Azure Kubernetes set context
       uses: Azure/aks-set-context@v1
@@ -64,11 +62,11 @@ jobs:
       uses: Azure/k8s-create-secret@v1.1
       with:
         # Container registry url
-        container-registry-url: https://index.docker.io/v1/
+        container-registry-url: garegistry1.azurecr.io
         # Container registry username
-        container-registry-username: '${{secrets.DOCKER_LOGIN}}'
+        container-registry-username: '${{secrets.REGISTRY_USERNAME}}'
         # Container registry password
-        container-registry-password:  '${{secrets.DOCKER_PASSWORD}}'
+        container-registry-password:  '${{secrets.REGISTRY_PASSWORD}}'
         # Type of Kubernetes secret. For example, docker-registry or generic
         secret-type: docker-registry
         # Name of the secret. You can use this secret name in the Kubernetes YAML configuration file.
@@ -83,7 +81,7 @@ jobs:
           k8s/deployment.yml
           k8s/service.yml
         # Fully qualified resource URL of the image(s) to be used for substitutions on the manifest files Example: contosodemo.azurecr.io/helloworld:test
-        images: '${{secrets.DOCKER_LOGIN}}/githubactions-aks-demo:${{github.sha}}'
+        images: '${{secrets.REGISTRY_USERNAME}}/githubactions-aks-demo:${{github.sha}}'
         # Name of a docker-registry secret that has already been set up within the cluster. Each of these secret names are added under imagePullSecrets field for the workloads found in the input manifest files
         imagepullsecrets: docker-image-pull-secret
         # deploy/promote/reject

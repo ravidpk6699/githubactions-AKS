@@ -57,7 +57,7 @@ jobs:
         # Resource Group Name
         resource-group: appservices
         # AKS Cluster Name
-        cluster-name: ga-aks-demok-cluster
+        cluster-name: ga-aks-demo-cluster
 
   # Create K8s secrets to pull images
     - name: Create secret in Kubernetes cluster

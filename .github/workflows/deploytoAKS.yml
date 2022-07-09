@@ -38,7 +38,7 @@ jobs:
       run: dotnet build -c release
     - name: docker build
       #run: docker build -t githubactions-aks-demo:'${{github.sha}}' .
-      run: docker build -t garegistry1.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }} .
+      run: docker build -t garegistry1.azurecr.io:${{ env.APP_NAME }}_${{ github.sha }} .
     
     - uses: azure/docker-login@v1
       with:
@@ -47,7 +47,7 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
        #docker build . garegistry1.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-        docker push garegistry1.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+        docker push garegistry1.azurecr.io:${{ env.APP_NAME }}_${{ github.sha }}
       
     - name: Azure Kubernetes set context
       uses: Azure/aks-set-context@v1

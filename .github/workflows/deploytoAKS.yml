@@ -42,7 +42,7 @@ jobs:
     
     - uses: azure/docker-login@v1
       with:
-        login-server: garegistry1.azurecr.io .
+        login-server: garegistry1
         username: ${{ secrets.REGISTRY_USERNAME }} 
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
